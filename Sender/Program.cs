@@ -4,15 +4,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
 
 class Program
 {
     static void Main(string[] args)
     {
-        var commandFilePath = System.IO.Path.GetFullPath("..\\commands.json");
-        var json = System.IO.File.ReadAllText(commandFilePath);
+        var commandFilePath = Path.GetFullPath("../commands.json");
 
-        var commandDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+		if (!File.Exists(commandFilePath))
+		{
+			// Create a file to write to.
+			var data = new Dictionary<string, string>();
+			string createText = JsonConvert.SerializeObject(data);
+			File.WriteAllText(commandFilePath, createText);
+		}
+
+        var json = File.ReadAllText(commandFilePath);
+
+        var commandDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(json) ?? new Dictionary<string, string>();
         
         var client = new Client();
         var discoveredDevices = client.DiscoverAsync().Result;
