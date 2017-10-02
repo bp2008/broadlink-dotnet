@@ -18,6 +18,7 @@ class Program
                 var rmDevice = deviceToUse as RMDevice;
                 rmDevice.AuthorizeAsync().Wait();
                 var temp = rmDevice.GetTemperatureAsync().Result;
+                Console.WriteLine("Temperature: " + temp);
                 rmDevice.EnterLearningModeAsync().Wait();
                 var data = rmDevice.ReadLearningDataAsync().Result;
                 Console.WriteLine(BitConverter.ToString(data));
