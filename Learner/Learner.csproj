@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NETCore.App" Version="1.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.2-beta2" />
+    <ProjectReference Include="..\Broadlink.Net\Broadlink.Net.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Broadlink.Net\Broadlink.Net.csproj" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
 </Project>
