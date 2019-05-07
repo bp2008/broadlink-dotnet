@@ -24,24 +24,26 @@ namespace Broadlink.Net
         }
 
         /// <summary>
-        /// Read the data for a remote control command.
+        /// Read the data for a remote control command.  This takes the device out of learning mode.
         /// </summary>
         /// <returns>Byte array containing the packet for <see cref="SendRemoteCommandAsync(byte[])" /></returns>
         public async Task<byte[]> ReadLearningDataAsync()
         {
-            var packet = PacketGenerator.GenerateReadLearningModePacket(this);
-            var encryptedResponse = await SendAndWaitForResponseAsync(packet);
+			byte[] packet = PacketGenerator.GenerateReadLearningModePacket(this);
+			byte[] encryptedResponse = await SendAndWaitForResponseAsync(packet);
 
-            var errorCode = BitConverter.ToInt16(encryptedResponse, 0x22);
+            short errorCode = BitConverter.ToInt16(encryptedResponse, 0x22);
             if (errorCode != 0)
             {
                 throw new Exception($"Error {errorCode} in learning response");
             }
 
-            var encryptedPayload = encryptedResponse.Slice(0x38);
+            byte[] encryptedPayload = encryptedResponse.Slice(0x38);
 
-            var payload = encryptedPayload.Decrypt(EncryptionKey);
-            var learningData = payload.Slice(0x04);
+			byte[] payload = encryptedPayload.Decrypt(EncryptionKey);
+
+			short pulseDataLength = BitConverter.ToInt16(payload, 0x06);
+			byte[] learningData = payload.Slice(0x04, 0x04 + 3 + pulseDataLength);
             return learningData;
         }
 
