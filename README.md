@@ -5,6 +5,11 @@ Ported from https://github.com/mjg59/python-broadlink/.
 
 Currently only supports RM devices (tested with RM3 Mini Blackbean).
 
+Updates by bp2008
+--------------------------
+
+I've fixed several bugs/slow performance problems and added a copy of the [Broadlink Protocol](https://github.com/bp2008/broadlink-dotnet/blob/master/BroadlinkProtocol.md).
+
 Usage
 --------------------------
 
