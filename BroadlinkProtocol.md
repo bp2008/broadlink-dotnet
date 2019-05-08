@@ -144,6 +144,8 @@ You must obtain an authorisation key from the device before you can communicate.
 
 Send this payload with a command value of 0x0065. The response packet will contain an encrypted payload from byte 0x38 onwards. Decrypt this using the default key and IV. The format of the decrypted payload is:
 
+**NOTE: The documentation above specifies an 80 byte packet, but the table of sizes specifies an 128 byte packet (0x80 bytes). **
+
 |Offset|Contents|
 |------|--------|
 |0x00-0x03|Device ID|

@@ -28,13 +28,13 @@ namespace Broadlink.Net
 		/// <returns></returns>
 		public async Task<List<BroadlinkDevice>> DiscoverAsync(int waitLimit = 3000, bool returnAfterOne = false)
 		{
-			var discoveredDevices = new List<BroadlinkDevice>();
+			List<BroadlinkDevice> discoveredDevices = new List<BroadlinkDevice>();
 
 			byte[] discoveryPacket = PacketGenerator.GenerateDiscoveryPacket(LocalIPEndPoint.Address, (short)LocalIPEndPoint.Port);
 
 			IPEndPoint ep = new IPEndPoint(IPAddress.Broadcast, 80);
 
-			using (var client = new UdpClient(LocalIPEndPoint))
+			using (UdpClient client = new UdpClient(LocalIPEndPoint))
 			{
 				await client.SendAsync(discoveryPacket, discoveryPacket.Length, ep);
 				Debug.WriteLine("Message sent to the broadcast address");
@@ -96,10 +96,10 @@ namespace Broadlink.Net
 
 		private IPEndPoint GetLocalIpEndpoint()
 		{
-			using (var socket = new Socket(SocketType.Dgram, ProtocolType.Udp))
+			using (Socket socket = new Socket(SocketType.Dgram, ProtocolType.Udp))
 			{
 				socket.Connect("8.8.8.8", 53);
-				var localIpEndpoint = socket.LocalEndPoint as IPEndPoint;
+				IPEndPoint localIpEndpoint = socket.LocalEndPoint as IPEndPoint;
 				localIpEndpoint.Address = localIpEndpoint.Address.MapToIPv4();
 				return localIpEndpoint;
 			}

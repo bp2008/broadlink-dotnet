@@ -9,6 +9,13 @@ Updates by bp2008
 --------------------------
 
 I've fixed several bugs/slow performance problems and added a copy of the [Broadlink Protocol](https://github.com/bp2008/broadlink-dotnet/blob/master/BroadlinkProtocol.md).
+Code improvements include:
+* Eliminated use of `var` in Broadlink.Net library.
+* Requests return when they get a response, without arbitrarily waiting 3000ms.
+* Configurable wait time for device discovery, optionally returning after the first response.
+* Added RMCommand class to provide a higher level interface to learning and sending commands (previously, you worked with raw byte arrays)
+* Encrypted buffers are properly padded with zeros as expected by the device, improving stability.
+* testApp console application extended to provide a more convenient testing interface.
 
 Usage
 --------------------------

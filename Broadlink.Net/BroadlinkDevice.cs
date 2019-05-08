@@ -65,15 +65,18 @@ namespace Broadlink.Net
 		{
 			byte[] authorizationPacket = PacketGenerator.GenerateAuthorizationPacket(this);
 
-			var encryptedResponse = await SendAndWaitForResponseAsync(authorizationPacket);
+			byte[] encryptedResponse = await SendAndWaitForResponseAsync(authorizationPacket);
 
-			var encryptedPayload = encryptedResponse.Slice(0x38);
-			var payload = encryptedPayload.Decrypt();
+			if (encryptedResponse.Length == 0x38)
+				throw new Exception("Broadlink device did not send an encrypted payload during authorization. Probably, there was a protocol error on our end.");
 
-			var deviceId = new byte[4];
+			byte[] encryptedPayload = encryptedResponse.Slice(0x38);
+			byte[] payload = encryptedPayload.Decrypt();
+
+			byte[] deviceId = new byte[4];
 			Array.Copy(payload, 0x00, deviceId, 0, deviceId.Length);
 
-			var encryptionKey = new byte[16];
+			byte[] encryptionKey = new byte[16];
 			Array.Copy(payload, 0x04, encryptionKey, 0, encryptionKey.Length);
 
 			DeviceId = deviceId;
@@ -103,7 +106,7 @@ namespace Broadlink.Net
 
 		protected async Task SendAsync(byte[] packet)
 		{
-			using (var client = new UdpClient(LocalIPEndPoint))
+			using (UdpClient client = new UdpClient(LocalIPEndPoint))
 			{
 				await client.SendAsync(packet, packet.Length, EndPoint);
 				PacketCount++;
@@ -112,6 +115,5 @@ namespace Broadlink.Net
 				return;
 			}
 		}
-
 	}
 }

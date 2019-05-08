@@ -50,6 +50,12 @@
     <Compile Include="..\Broadlink.Net\PacketGenerator.cs">
       <Link>PacketGenerator.cs</Link>
     </Compile>
+    <Compile Include="..\Broadlink.Net\RMCommand.cs">
+      <Link>RMCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\Broadlink.Net\RMCommandType.cs">
+      <Link>RMCommandType.cs</Link>
+    </Compile>
     <Compile Include="..\Broadlink.Net\RMDevice.cs">
       <Link>RMDevice.cs</Link>
     </Compile>
