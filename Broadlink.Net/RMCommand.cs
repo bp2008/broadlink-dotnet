@@ -92,14 +92,18 @@ namespace Broadlink.Net
 		public void SetPulses(ushort[] broadlinkPulseData)
 		{
 			List<byte> raw = new List<byte>(broadlinkPulseData.Length * 2);
+			bool pulseDataEvenLength = broadlinkPulseData.Length % 2 == 0;
 			for (int i = 0; i < broadlinkPulseData.Length; i++)
 			{
-				ConvertBroadlinkPulseToBytes(raw, Clamp(broadlinkPulseData[i], (ushort)1, ushort.MaxValue));
+				ushort p = broadlinkPulseData[i];
+				if (i + 1 == broadlinkPulseData.Length && p != 3333 && pulseDataEvenLength)
+					p = 3333; // Broadlink often has a value of 3333 (0x50D) at the end of learned commands.  I don't know if it is actually necessary.
+				ConvertBroadlinkPulseToBytes(raw, Clamp(p, (ushort)1, (ushort)short.MaxValue)); // Clamp to range [1-32767]
 			}
-			if (broadlinkPulseData.Length % 2 == 1)
+			if (!pulseDataEvenLength)
 			{
 				// We ended without an "off" pulse.  
-				ConvertBroadlinkPulseToBytes(raw, 3333); // Broadlink often has a value of 3333 (0x50D) at the end of learned commands.
+				ConvertBroadlinkPulseToBytes(raw, 3333); // End with Broadlink's sentinel value
 			}
 			RawPulseData = raw.ToArray();
 		}
