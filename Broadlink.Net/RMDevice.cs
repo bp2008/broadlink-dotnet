@@ -46,25 +46,29 @@ namespace Broadlink.Net
 		}
 
 		/// <summary>
-		/// Execute a remote control command
+		/// Execute a remote control command.  Returns true if successful (I think?) or false otherwise.
 		/// </summary>
 		/// <param name="data">Packet obtained using <see cref="ReadLearningDataAsync()" /></param>
 		/// <returns></returns>
-		public async Task SendRemoteCommandAsync(RMCommand cmd)
+		public async Task<bool> SendRemoteCommandAsync(RMCommand cmd)
 		{
 			byte[] packet = PacketGenerator.GenerateSendDataPacket(this, cmd.ToBinary());
-			await SendAsync(packet);
+			byte[] encryptedResponse = await SendAndWaitForResponseAsync(packet);
+			return encryptedResponse.Length > 56;
+			//await SendAsync(packet);
 		}
 
 		/// <summary>
-		/// Execute a remote control command
+		/// Execute a remote control command.  Returns true if successful (I think?) or false otherwise.
 		/// </summary>
 		/// <param name="data">Packet obtained using <see cref="ReadLearningDataAsync()" /></param>
 		/// <returns></returns>
-		public async Task SendRemoteCommandAsync(byte[] data)
+		public async Task<bool> SendRemoteCommandAsync(byte[] data)
 		{
 			byte[] packet = PacketGenerator.GenerateSendDataPacket(this, data);
-			await SendAsync(packet);
+			byte[] encryptedResponse = await SendAndWaitForResponseAsync(packet);
+			return encryptedResponse.Length > 56;
+			//await SendAsync(packet);
 		}
 
 		/// <summary>

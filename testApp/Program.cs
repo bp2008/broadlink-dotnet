@@ -76,8 +76,9 @@ class Program
 							if (commands.TryGetValue(cki.KeyChar, out RMCommand cmd))
 							{
 								Log("#" + cki.KeyChar + ": " + BitConverter.ToString(cmd.ToBinary().Skip(4).ToArray()));
-								rmDevice.SendRemoteCommandAsync(cmd).Wait();
-								Log("" + cki.KeyChar + ": Sent");
+								Task<bool> sendTask = rmDevice.SendRemoteCommandAsync(cmd);
+								sendTask.Wait();
+								Log("" + cki.KeyChar + ": Send " + (sendTask.Result ? "succeeded" : "FAILED"));
 							}
 							else
 								Log("" + cki.KeyChar + ": Command Not Found");
