@@ -26,7 +26,7 @@ namespace Broadlink.Net
 		/// <param name="waitLimit">Milliseconds to wait for responses to the discovery broadcast.</param>
 		/// <param name="returnAfterOne">If true, this method will return as soon as one device responds without waiting for <paramref name="waitLimit"/> to elapse.</param>
 		/// <returns></returns>
-		public async Task<List<BroadlinkDevice>> DiscoverAsync(int waitLimit = 3000, bool returnAfterOne = false)
+		public async Task<List<BroadlinkDevice>> DiscoverAsync(int waitLimit = 3000, bool returnAfterOne = false, IPAddress targetDeviceAddr = null)
 		{
 			List<BroadlinkDevice> discoveredDevices = new List<BroadlinkDevice>();
 
@@ -61,6 +61,8 @@ namespace Broadlink.Net
 
 							discoveredDevices.Add(discoveredDevice);
 							if (returnAfterOne)
+								break;
+							if (discoveredDevice.EndPoint.Address == targetDeviceAddr)
 								break;
 						}
 					}
