@@ -98,7 +98,7 @@ namespace Broadlink.Net
 
 		private IPEndPoint GetLocalIpEndpoint()
 		{
-			using (Socket socket = new Socket(SocketType.Dgram, ProtocolType.Udp))
+			using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Unspecified))
 			{
 				socket.Connect("8.8.8.8", 53);
 				IPEndPoint localIpEndpoint = socket.LocalEndPoint as IPEndPoint;
