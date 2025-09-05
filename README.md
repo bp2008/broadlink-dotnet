@@ -8,7 +8,7 @@ Currently only supports RM devices (tested with RM3 Mini Blackbean).
 Updates by bp2008
 --------------------------
 
-Originally from https://github.com/hansmbakker/broadlink-dotnet
+Originally from https://github.com/webmonger/broadlink-dotnet
 
 I've fixed several bugs/slow performance problems and added a copy of the [Broadlink Protocol](https://github.com/bp2008/broadlink-dotnet/blob/master/BroadlinkProtocol.md).
 Code improvements include:
